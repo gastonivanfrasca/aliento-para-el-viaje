@@ -28,7 +28,7 @@ const PlayButton = ({ audioRef }: PlayButtonProps) => {
       variant={"defaultRounded"}
       size={"sm"}
       onClick={handlePlayPause}
-      className=" row-start-1 row-span-1 col-start-1 col-end-4 w-20 h-20 md:w-12 md:h-12 rounded-full"
+      className=" row-start-1 col-start-1 col-end-4 w-16 h-16 rounded-full"
     >
       {isPlaying ? <Pause color="white" size={12} /> : <Play color="white" size={12} />}
     </Button>

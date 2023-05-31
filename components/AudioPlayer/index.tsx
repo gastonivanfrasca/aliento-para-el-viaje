@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import AudioPlayerSkeleton from "./Skeleton";
 import ForwardButton from "../FowardButton";
 import PlayButton from "@/components/PlayButton";
 import ProgressBar from "../ProgressSlider";
 import RewindButton from "../RewindButton";
-import Skeleton from "react-loading-skeleton";
 import TimeIndicator from "@/components/ui/TimeIndicator";
 import TimeProgressIndicator from "@/components/TimeProgressIndicator";
 import VolumeSlider from "../VolumeSlider";
@@ -61,8 +61,8 @@ const AudioPlayer = ({ audioURL }: AudioPlayerTypes) => {
       {/* show the audio player only when the ref is setted */}
       {showPlayer ? (
         <div>
-          <div className="flex md:grid md:grid-cols-[10fr_2fr] place-items-center justify-items-center md:mb-4 md:mt-4">
-            <div className="grid grid-rows-2 grid-cols-3 md:grid-rows-1 place-items-cente w-screen md:w-96 md:gap-16 justify-items-center">
+          <div className="flex md:grid md:grid-cols-[10fr_2fr] place-items-center justify-items-center mb-4 md:mt-4">
+            <div className="grid grid-rows-1 grid-cols-3 md:grid-rows-1 place-items-center w-screen md:w-96 gap-32 md:gap-16 justify-items-center">
               <PlayButton audioRef={audioRef} />
               <ForwardButton audioRef={audioRef} />
               <RewindButton audioRef={audioRef} />
@@ -78,7 +78,7 @@ const AudioPlayer = ({ audioURL }: AudioPlayerTypes) => {
           </div>
         </div>
       ) : (
-        <Skeleton count={1} />
+        <AudioPlayerSkeleton />
       )}
     </div>
   );

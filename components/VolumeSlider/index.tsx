@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
+import { Volume } from "lucide-react";
+
 type VolumeSliderProps = {
   audioRef: React.MutableRefObject<HTMLAudioElement | undefined>;
 };
@@ -23,7 +25,8 @@ function VolumeSlider({ audioRef }: VolumeSliderProps) {
   };
 
   return (
-    <div className="w-full px-4 py-2">
+    <div className="w-full px-4 py-2 flex items-center">
+      <Volume />
       <input
         type="range"
         min="0"
