@@ -1,12 +1,6 @@
 import { getDatabase, ref, set } from "firebase/database";
 import { initializeApp, FirebaseApp } from "firebase/app";
 
-interface Transcript {
-  id: string;
-  created_at: string;
-  text: string;
-}
-
 interface TranscriptionResult {
   status: string;
   error?: string;

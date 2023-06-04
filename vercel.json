@@ -1,0 +1,8 @@
+{
+    "crons": [
+      {
+        "path": "/api/generate-transcript",
+        "schedule": "30 12 * * *"
+      }
+    ]
+  }

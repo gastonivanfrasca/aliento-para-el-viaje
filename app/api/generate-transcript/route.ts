@@ -65,6 +65,7 @@ export async function GET(request: Request): Promise<Response> {
     const episodePubDate = pubDate.getDate()
     const currentDay = currentDate.getDate()
     // Checking if the latest episode was published today
+    console.log(episodePubDate, currentDay)
     if (episodePubDate === currentDay) {
       // Generating a transcription for the latest episode using AssemblyAI
       const transcriptID: string = await generateTranscription(audioURL);
@@ -80,7 +81,7 @@ export async function GET(request: Request): Promise<Response> {
     } else {
       // Returning an error response if the latest episode was not published today
       return new Response(JSON.stringify({ message: "no new audio yet" }), {
-        status: 500,
+        status: 204,
         headers: {
           "content-type": "application/json",
         },
