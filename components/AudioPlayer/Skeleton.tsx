@@ -12,7 +12,7 @@ const AudioPlayerSkeleton = () => {
           <Skeleton className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background border border-input hover:bg-accent hover:text-accent-foreground px-3 row-start-1 row-span-1 col-start-1 col-span-2 w-14 h-14 rounded-full md:row-start-1 md:row-span-1 bg-slate-200" />
         </div>
       </div>
-      <Skeleton className="w-full h-2  rounded-md mb-2" />
+      <Skeleton className="w-full h-2  rounded-md mb-2" data-testid="progress-bar-skeleton" />
       <div className="flex justify-between">
         <TimeIndicator value={numToMinSec(0)} />
         <TimeIndicator value={numToMinSec(0)} />
