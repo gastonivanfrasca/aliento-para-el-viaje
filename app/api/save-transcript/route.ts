@@ -1,5 +1,6 @@
 import { getDatabase, ref, set } from "firebase/database";
 import { initializeApp, FirebaseApp } from "firebase/app";
+import { FIREBASE_CONFIG, Status, DBEndpoints } from "@/lib/db/entities";
 
 interface TranscriptionResult {
   status: string;
@@ -7,17 +8,6 @@ interface TranscriptionResult {
   text?: string;
 }
 
-const firebaseConfig = {
-  apiKey: process.env.FIREKEY,
-  authDomain: "aliento-para-el-viaje-7d878.firebaseapp.com",
-  projectId: "aliento-para-el-viaje-7d878",
-  storageBucket: "aliento-para-el-viaje-7d878.appspot.com",
-  messagingSenderId: "1022413690846",
-  appId: "1:1022413690846:web:44ef84a3b45b8f7311ef4f",
-  measurementId: "G-D18XLPD4CX",
-  databaseURL:
-    "https://aliento-para-el-viaje-7d878-default-rtdb.firebaseio.com/",
-};
 
 // Define headers for the AssemblyAI API request
 const headers: { [key: string]: string } = {
@@ -26,12 +16,12 @@ const headers: { [key: string]: string } = {
 };
 
 export async function POST(request: Request): Promise<Response> {
-  const app: FirebaseApp = initializeApp(firebaseConfig);
+  const app: FirebaseApp = initializeApp(FIREBASE_CONFIG);
   const db = getDatabase(app);
   const req = await request.json()
   const status = req.status
   const transcriptID = req.transcript_id
-  if (status === "completed") {
+  if (status === Status.COMPLETED) {
     // Define the polling endpoint for the AssemblyAI API
     const pollingEndpoint: string = `https://api.assemblyai.com/v2/transcript/${transcriptID}`;
     const pollingResponse: Response = await fetch(pollingEndpoint, { headers });
@@ -39,7 +29,7 @@ export async function POST(request: Request): Promise<Response> {
     const transcriptionResult: TranscriptionResult = await pollingResponse.json();
     console.log(transcriptionResult)
     // Save the transcription to Firebase
-    set(ref(db, "transcription"), {
+    set(ref(db, DBEndpoints.TRANSCRIPTION), {
       createdAt: new Date().toISOString(),
       text: transcriptionResult.text,
     }).then(() => {
