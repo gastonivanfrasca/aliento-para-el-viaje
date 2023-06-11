@@ -16,19 +16,20 @@ export async function GET(request: Request) {
     // Initializing the Firebase app and database
     const app: FirebaseApp = initializeApp(FIREBASE_CONFIG);
     const db = getDatabase(app);
-    // Extracting the audio URL and publication date from the latest episode
-    const audioURL: string = latestEpisode.enclosure["@_url"];
     const pubDate: Date = new Date(latestEpisode.pubDate);
     const currentDate: Date = new Date();
-    const episodePubDate = pubDate.getDate()
-    const currentDay = currentDate.getDate()
+    const formattedPubDate = `${pubDate.getFullYear()}-${pubDate.getMonth()}-${pubDate.getDate()}`
+    const formattedCurrentDate = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`
     // Checking if the latest episode was published today
-    console.log(episodePubDate, currentDay)
-    if (episodePubDate === currentDay) {
+    console.log(formattedPubDate, formattedCurrentDate)
+    if (true) {
       // Generating a transcription for the latest episode using AssemblyAI
-      const transcriptID: string = await generateTranscription(audioURL);
+      const { id: transcriptID, error } = await generateTranscription(latestEpisode);
+      if (error) {
+        throw new Error("An error ocurred while generating transcription");
+      }
       // Saving the transcription ID, creation date, and audio URL to Firebase
-      await saveTranscriptToFirebase(db, transcriptID, pubDate.toISOString(), audioURL);
+      await saveTranscriptToFirebase(db, transcriptID, latestEpisode, pubDate.toISOString());
       // Returning a success response
       return new Response("Successfully generated transcription", {
         status: 200,
@@ -49,31 +50,53 @@ export async function GET(request: Request) {
 }
 
 // Function to generate a transcription for an audio file using AssemblyAI
-const generateTranscription = async (audioURL: string): Promise<string> => {
+const generateTranscription = async (latestEpisode: Episode): Promise<{
+  id: string;
+  error: Error | null;
+}> => {
   const headers: Record<string, string> = {
     authorization: process.env.ASSEMBLYAI_KEY!,
     "content-type": "application/json",
   };
-  const response: Response = await fetch("https://api.assemblyai.com/v2/transcript", {
-    method: "POST",
-    body: JSON.stringify({
-      audio_url: audioURL,
-      language_code: ASSEMBLYAI_LANGUAGE_CODE,
-      webhook_url: ASSEMBLYAI_WEBHOOK_URL,
-    }),
-    headers,
-  });
-  const responseData: any = await response.json();
-  const transcriptId: string = responseData.id;
-  return transcriptId;
+  const audioURL: string = latestEpisode.enclosure["@_url"];
+  const episodeTitle = latestEpisode.title;
+  console.log(episodeTitle)
+  try {
+    const response: Response = await fetch("https://api.assemblyai.com/v2/transcript", {
+      method: "POST",
+      body: JSON.stringify({
+        audio_url: audioURL,
+        language_code: ASSEMBLYAI_LANGUAGE_CODE,
+        webhook_url: ASSEMBLYAI_WEBHOOK_URL,
+      }),
+      headers,
+    });
+    const responseData: any = await response.json();
+    const transcriptId: string = responseData.id;
+    return {
+      id: transcriptId,
+      error: null,
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error("An error ocurred while generating transcription");
+  }
 };
 
 // Function to save a transcription ID, creation date, and audio URL to Firebase
-const saveTranscriptToFirebase = async (db: any, transcriptID: string, createdAt: string, audioURL: string) => {
-  await set(ref(db, "audio"), {
-    transcriptionID: transcriptID,
-    createdAt: createdAt,
-    url: audioURL,
-  });
+const saveTranscriptToFirebase = async (db: any, transcriptID: string, latestEpisode: Episode, pubDate: string) => {
+  const audioURL: string = latestEpisode.enclosure["@_url"];
+  const episodeTitle = latestEpisode.title;
+  try {
+    await set(ref(db, "audio"), {
+      transcriptionID: transcriptID,
+      title: episodeTitle,
+      createdAt: pubDate,
+      url: audioURL,
+    });
+  } catch (error) {
+    console.log(error)
+    throw new Error("An error ocurred while saving transcription to Firebase");
+  }
 };
 

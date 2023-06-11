@@ -29,4 +29,5 @@ export enum Status {
 
 export enum DBEndpoints {
     TRANSCRIPTION = "transcription",
+    AUDIO = "audio",
 }

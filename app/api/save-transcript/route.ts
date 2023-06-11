@@ -8,7 +8,6 @@ interface TranscriptionResult {
   text?: string;
 }
 
-
 // Define headers for the AssemblyAI API request
 const headers: { [key: string]: string } = {
   authorization: process.env.ASSEMBLYAI_KEY!,
@@ -18,38 +17,35 @@ const headers: { [key: string]: string } = {
 export async function POST(request: Request): Promise<Response> {
   const app: FirebaseApp = initializeApp(FIREBASE_CONFIG);
   const db = getDatabase(app);
-  const req = await request.json()
-  const status = req.status
-  const transcriptID = req.transcript_id
-  if (status === Status.COMPLETED) {
-    // Define the polling endpoint for the AssemblyAI API
-    const pollingEndpoint: string = `https://api.assemblyai.com/v2/transcript/${transcriptID}`;
-    const pollingResponse: Response = await fetch(pollingEndpoint, { headers });
-    // Parse the transcription result from the response
-    const transcriptionResult: TranscriptionResult = await pollingResponse.json();
-    console.log(transcriptionResult)
-    // Save the transcription to Firebase
-    set(ref(db, DBEndpoints.TRANSCRIPTION), {
-      createdAt: new Date().toISOString(),
-      text: transcriptionResult.text,
-    }).then(() => {
-      console.log("successfully saved transcription");
-    }).catch((error: Error) => {
-      console.log(error)
-    });
-    return new Response(JSON.stringify("successfully saved transcription"), {
-      status: 200,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-  } else {
-    // If the status is not "completed", return a message indicating that the transcription is not yet complete
-    return new Response(JSON.stringify("transcription not completed yet"), {
+  try {
+    const req = await request.json()
+    const status = req.status
+    const transcriptID = req.transcript_id
+    if (status === Status.COMPLETED) {
+      // Define the polling endpoint for the AssemblyAI API
+      const pollingEndpoint: string = `https://api.assemblyai.com/v2/transcript/${transcriptID}`;
+      const pollingResponse: Response = await fetch(pollingEndpoint, { headers });
+      // Parse the transcription result from the response
+      const transcriptionResult: TranscriptionResult = await pollingResponse.json();
+      console.log(transcriptionResult.text)
+      // Save the transcription to Firebase
+      await set(ref(db, DBEndpoints.TRANSCRIPTION), {
+        createdAt: new Date().toISOString(),
+        text: transcriptionResult.text,
+      });
+      return new Response(JSON.stringify("successfully saved transcription"), {
+        status: 200,
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+    } else {
+      throw new Error("Transcription not ready yet");
+    }
+  } catch (error) {
+    console.log(error)
+    return new Response(JSON.stringify("An error occurred while saving the transcription"), {
       status: 500,
-      headers: {
-        "content-type": "application/json",
-      },
     });
   }
 };
