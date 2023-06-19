@@ -1,3 +1,6 @@
+/**
+ * Firebase configuration object.
+ */
 type FirebaseConfig = {
     apiKey: string;
     authDomain: string;
@@ -9,6 +12,9 @@ type FirebaseConfig = {
     databaseURL: string;
 };
 
+/**
+ * Firebase configuration object with the actual values.
+ */
 export const FIREBASE_CONFIG: FirebaseConfig = {
     apiKey: process.env.FIREKEY!,
     authDomain: "aliento-para-el-viaje-7d878.firebaseapp.com",
@@ -21,13 +27,25 @@ export const FIREBASE_CONFIG: FirebaseConfig = {
         "https://aliento-para-el-viaje-7d878-default-rtdb.firebaseio.com/",
 };
 
+/**
+ * Enum for the different status of a transcription.
+ */
 export enum Status {
     COMPLETED = "completed",
     PROCESSING = "processing",
     QUEUED = "queued",
 }
 
+/**
+ * Enum for the different endpoints of the database.
+ */
 export enum DBEndpoints {
     TRANSCRIPTION = "transcription",
+    COMPLETION = "completion",
+    TRANSLATION = "translation",
     AUDIO = "audio",
 }
+
+export type CompletionDBResp = {
+    value: string;
+};

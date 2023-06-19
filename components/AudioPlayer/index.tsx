@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import AudioPlayerSkeleton from "./Skeleton";
 import ForwardButton from "../FowardButton";
 import PlayButton from "@/components/PlayButton";
@@ -11,8 +10,8 @@ import MenuSheet from "../MenuSheet";
 import TimeIndicator from "@/components/ui/TimeIndicator";
 import TimeProgressIndicator from "@/components/TimeProgressIndicator";
 import VolumeSlider from "../VolumeSlider";
-import numToMinSec from "@/helpers/formatters/numToMinSec";
 import useDeviceDetect from "@/hooks/useDeviceDetection";
+import { numToMinSec } from "@/lib/utils";
 
 type AudioPlayerTypes = {
   audioURL: string;

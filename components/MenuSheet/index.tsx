@@ -10,6 +10,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
+import LangSelector from "@/components/LangSelector/LangSelector";
 
 const MenuSheet = () => {
   return (
@@ -25,7 +26,7 @@ const MenuSheet = () => {
           <SheetTitle>Aliento para el viaje</SheetTitle>
         </SheetHeader>
         <Separator className="mt-2 mb-4" />
-        <Button variant={"link"} size={"default"} className="text-lg"> <Info size={18} className="mr-2" /> Acerca de</Button>
+        <LangSelector />
       </SheetContent>
     </Sheet>
   );

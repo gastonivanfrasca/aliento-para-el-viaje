@@ -1,5 +1,4 @@
-// BEGIN: 7b3c1f2c7b3c
-import { getByTestId, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import AudioPlayerSkeleton from "./Skeleton";
 
 describe("AudioPlayerSkeleton", () => {

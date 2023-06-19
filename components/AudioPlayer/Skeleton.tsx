@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import TimeIndicator from "@/components/ui/TimeIndicator";
-import numToMinSec from "@/helpers/formatters/numToMinSec";
+import { numToMinSec } from "@/lib/utils";
 
 const AudioPlayerSkeleton = () => {
   return (

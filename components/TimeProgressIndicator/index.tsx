@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-
 import TimeIndicator from "@/components/ui/TimeIndicator";
-import numToMinSec from "@/helpers/formatters/numToMinSec";
+import { numToMinSec } from "@/lib/utils";
 
 type DurationIndicatorProps = {
   audioRef: React.MutableRefObject<HTMLAudioElement | undefined>;
