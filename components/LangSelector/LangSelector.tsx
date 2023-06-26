@@ -1,7 +1,8 @@
 "use client";
 import {
   useContextReducerState,
-  useContextReducerDispatch
+  useContextReducerDispatch,
+  ACTIONS
 } from "@/hooks/useContextReducer";
 import {
   Select,
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { LANGS } from "@/lib/lang/types";
 import { LOCAL_STORAGE_KEY } from "@/lib/lang/types";
+import { getDictionary, getWording } from "@/lib/dict";
 
 export function LangSelector({
 }: any) {
@@ -22,7 +24,8 @@ export function LangSelector({
   return (
     <Select value={lang} onValueChange={
       (value) => {
-        dispatch({ type: "SET_LANG", payload: value })
+        dispatch({ type: ACTIONS.SET_LANG, payload: value as LANGS })
+        dispatch({ type: ACTIONS.SET_DICTIONARY, payload: getDictionary(value as LANGS) })
         window.localStorage.setItem(LOCAL_STORAGE_KEY, value)
       }
     }>
@@ -31,9 +34,9 @@ export function LangSelector({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Lenguaje</SelectLabel>
-          <SelectItem value={LANGS.ES} >Español</SelectItem>
-          <SelectItem value={LANGS.EN} >English</SelectItem>
+          <SelectLabel>{getWording(lang, "menu.selectLanguage")}</SelectLabel>
+          <SelectItem value={LANGS.ES} >{getWording(lang, "menu.languages.spanish")}</SelectItem>
+          <SelectItem value={LANGS.EN} >{getWording(lang, "menu.languages.english")}</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

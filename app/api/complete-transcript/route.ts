@@ -26,7 +26,7 @@ export async function POST(): Promise<Response> {
 
 const buildPrompt = (text: string): string => {
     const prompt = `
-    1. Dale formato al siguiente texto para que sea utilizado en un componente de React que utilice la librería "react-markdown", el resultado debe ser un sólo string con caracteres que indiquen que se debe insertar un salto de línea (\n\n), negritas(***), etc, además al ser una trasncripción de audio es posible que nombres o palabras no estén bien escritas, corrígelas:
+    1. Dale formato al siguiente texto para que sea utilizado en un componente de React que utilice la librería "react-markdown", el resultado debe ser un sólo string, a ese string agrégale caracteres que indiquen que se debe insertar un salto de línea (\n\n), negritas(***), etc, además al ser una trasncripción de audio es posible que nombres o palabras no estén bien escritas, corrígelas:
 
     ${text}
 

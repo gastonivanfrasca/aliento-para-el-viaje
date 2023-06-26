@@ -13,10 +13,11 @@ export async function GET() {
     const transcriptID = await generateTranscription(latestEpisode);
     const audioURL: string = latestEpisode.enclosure["@_url"];
     const episodeTitle = latestEpisode.title;
+
     await writeToDB(DBEndpoints.AUDIO, {
       transcriptionID: transcriptID,
       title: episodeTitle,
-      createdAt: pubDate,
+      createdAt: pubDate.toISOString(),
       url: audioURL,
     })
     return new Response("Successfully generated transcription", {

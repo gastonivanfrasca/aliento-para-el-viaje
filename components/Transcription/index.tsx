@@ -23,7 +23,6 @@ type TranscriptionProps = {
     },
 }
 
-
 const Transcription = ({
     url,
     title,

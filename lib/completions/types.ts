@@ -3,5 +3,5 @@ export enum OPENAI_MODELS {
     CURIE = "curie",
     BABBAGE = "babbage",
     ADA = "ada",
-    GPT4 = "gpt-4-0613",
+    GPT4 = "gpt-4",
 }
