@@ -25,8 +25,9 @@ function ProgressBar({ audioRef }: AudioProgressBarTypes) {
     return () => {
       if (!audio) return;
       audio.removeEventListener("timeupdate", updateProgress);
+      setProgress(0);
     };
-  }, [audioRef]);
+  }, [audioRef.current]);
 
   const handleClick = (e: any) => {
     // get information about the size and position of the bar

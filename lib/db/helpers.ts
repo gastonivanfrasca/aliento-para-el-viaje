@@ -1,6 +1,7 @@
-import { initializeApp, FirebaseApp } from "firebase/app";
-import { getDatabase, ref, get, set, child } from "firebase/database";
-import { FIREBASE_CONFIG, DBEndpoints } from "@/lib/db/types";
+import { getDatabase } from "firebase-admin/database";
+import { get, child, set, DatabaseReference } from "firebase/database"
+import { DBEndpoints } from "@/lib/db/types";
+import admin from "./init"
 
 /**
  * Retrieves data from the Firebase Realtime Database.
@@ -9,8 +10,8 @@ import { FIREBASE_CONFIG, DBEndpoints } from "@/lib/db/types";
  * @throws An error if there is no data available or if there is an error retrieving the data.
  */
 export const getFromDB = async (dbEndpoint: DBEndpoints) => {
-    const app: FirebaseApp = initializeApp(FIREBASE_CONFIG);
-    const dbRef = ref(getDatabase(app));
+    const db = getDatabase()
+    const dbRef = db.refFromURL(admin.options.databaseURL!) as unknown as DatabaseReference
     try {
         const data = await get(child(dbRef, dbEndpoint)).then((snapshot) => {
             if (snapshot.exists()) {
@@ -24,11 +25,11 @@ export const getFromDB = async (dbEndpoint: DBEndpoints) => {
         })
         return data;
     } catch (error) {
+        console.log("getFromDB Error")
         console.error(error);
         throw error;
     }
 }
-
 /**
  * Writes data to the Firebase Realtime Database.
  * @param dbEndpoint The endpoint to write data to.
@@ -36,8 +37,8 @@ export const getFromDB = async (dbEndpoint: DBEndpoints) => {
  * @throws An error if there is an error writing the data.
  */
 export const writeToDB = async (dbEndpoint: DBEndpoints, data: any) => {
-    const app: FirebaseApp = initializeApp(FIREBASE_CONFIG);
-    const dbRef = ref(getDatabase(app));
+    const db = getDatabase()
+    const dbRef = db.refFromURL(admin.options.databaseURL!) as unknown as DatabaseReference
     try {
         await set(child(dbRef, dbEndpoint), data);
     } catch (error) {

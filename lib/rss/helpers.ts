@@ -4,7 +4,7 @@
  */
 
 import { XMLParser } from "fast-xml-parser";
-import type { Episode } from "@/lib/rss/types";
+import type { Episode, RSSData} from "@/lib/rss/types";
 
 /**
  * Options for the XML parser.
@@ -35,3 +35,15 @@ export const getLatestEpisode = async (): Promise<Episode> => {
     const lastEpisode: Episode = jsonObj.rss.channel.item[0] as Episode;
     return lastEpisode;
 };
+
+export const getRSSData = async () => {
+    const parser: XMLParser = new XMLParser(OPTIONS);
+    const response: Response = await fetch(ANCHOR_RSS_URL, {
+        method: "GET",
+        cache: "no-cache",
+    });
+    const xml: string = await response.text();
+    const jsonObj = parser.parse(xml)
+    const rssData: RSSData = jsonObj.rss;
+    return rssData;
+}

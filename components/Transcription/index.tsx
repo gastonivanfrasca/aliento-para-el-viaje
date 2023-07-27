@@ -32,7 +32,7 @@ const Transcription = ({
     return (
         <ContextReducerProvider reducer={reducer} initialState={initialState}>
         <main className="flex min-h-screen flex-col items-center justify-between p-8 pb-44">
-                <Footer audioURL={url} />
+                <Footer url={url}   />
                 <Card className="w-screen md:w-full border-none shadow-none">
                     <CardHeader>
                         <CardTitle>{`${title} - ${createdAt}`}</CardTitle>

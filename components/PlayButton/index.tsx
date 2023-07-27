@@ -1,9 +1,8 @@
 "use client";
 
 import { Pause, Play } from "lucide-react";
-
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PlayButtonProps = {
   audioRef: React.MutableRefObject<HTMLAudioElement | undefined>;
@@ -11,10 +10,13 @@ type PlayButtonProps = {
 
 const PlayButton = ({ audioRef }: PlayButtonProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  useEffect(() => {
+    if (!audioRef.current) return;
+    setIsPlaying(false);
+  }, [audioRef.current]);
 
   function handlePlayPause() {
     if (!audioRef.current) return;
-
     if (isPlaying) {
       audioRef.current.pause();
     } else {

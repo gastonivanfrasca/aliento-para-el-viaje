@@ -28,7 +28,7 @@ function TimeProgressIndicator({ audioRef }: DurationIndicatorProps) {
       // clean up the event listener when the component unmounts
       audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
-  }, [audioRef]);
+  }, [audioRef.current]);
 
   return <TimeIndicator value={numToMinSec(currentTime)} />;
 }

@@ -12,17 +12,33 @@ import TimeProgressIndicator from "@/components/TimeProgressIndicator";
 import VolumeSlider from "../VolumeSlider";
 import useDeviceDetect from "@/hooks/useDeviceDetection";
 import { numToMinSec } from "@/lib/utils";
+import { useContextReducerState } from "@/hooks/useContextReducer";
 
-type AudioPlayerTypes = {
-  audioURL: string;
-};
-
-const AudioPlayer = ({ audioURL }: AudioPlayerTypes) => {
+const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>();
   const [audio, setAudio] = useState<HTMLAudioElement>();
   const [duration, setDuration] = useState(0);
   const [showPlayer, setShowPlayer] = useState(false);
   const mobile = useDeviceDetect();
+  const { audioURL } = useContextReducerState();
+
+  useEffect(() => {
+    if (!audio) return;
+    if (audioURL) {
+      audio.src = audioURL;
+      audio.load();
+      if (audio?.currentTime === 0) {
+        audioRef?.current?.pause();
+      }
+    }
+    return () => {
+      if (!audio) return;
+      audio.removeEventListener("loadedmetadata", () => {
+        setDuration(audio.duration);
+      });
+    }
+  }, [audioURL])
+
 
   // Fetches the audio file and create an audio element and set duration
   useEffect(() => {
