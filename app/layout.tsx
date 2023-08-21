@@ -1,23 +1,25 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
+"use client"
+import './globals.css'
+import { Inter } from 'next/font/google'
+import AudioPlayer from "@/components/AudioPlayer"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: "Aliento para el viaje",
-  description: "Los audios Aliento para el viaje son un recordatorio de que la esperanza de Dios y su amor incomparable nos acompañan en cada tramo del camino.",
-};
+
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={inter.className}>
         {children}
+        <footer>
+          <AudioPlayer url="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" customStyles={{ width: '300px' }} />
+        </footer>
       </body>
     </html>
-  );
+  )
 }
