@@ -1,11 +1,10 @@
-"use client"
 import './globals.css'
-import { Inter } from 'next/font/google'
-import AudioPlayer from "@/components/AudioPlayer"
+import { Jost } from 'next/font/google'
+import NavBar from '@/components/common/NavBar'
+import { ShadButtonTypes } from '@/types/button'
+import { Icons } from '@/types/icons'
 
-const inter = Inter({ subsets: ['latin'] })
-
-
+const jost = Jost({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
@@ -14,11 +13,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jost.className}>
+        <NavBar
+          title="Audio del día"
+          buttonVariant={ShadButtonTypes.ghost}
+          buttonIconSize={18}
+          dark={false}
+        />
         {children}
-        <footer>
-          <AudioPlayer url="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" customStyles={{ width: '300px' }} />
-        </footer>
       </body>
     </html>
   )

@@ -1,5 +1,11 @@
+"use client";
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import ButtonRound from '../ButtonRound';
+import { RoundedButtonSizes } from '@/types/button';
+import { Colors } from '@/types/colors';
+import { getLatestEpisode } from '@/lib/rss';
+import { ACTIONS, useContextReducerDispatch } from '@/hooks/useContextReducer';
 
 interface AudioPlayerProps {
   url: string;
@@ -11,6 +17,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
   const [progress, setProgress] = useState({ played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 });
   const [duration, setDuration] = useState(0);
   const playerRef = useRef<ReactPlayer>(null);
+
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -56,21 +63,32 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
         playing={playing}
         onProgress={handleProgress}
         onDuration={handleDuration}
-        width="100%"
-        height="50px"
+        width="100vw"
+        height="0px"
         controls={false}
       />
       <div>
-        <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-        <button onClick={handleStop}>Stop</button>
-        <button onClick={handleRewind}>Rewind 10s</button>
-        <button onClick={handleForward}>Forward 10s</button>
-        <div onClick={handleSeek} style={{ position: 'relative', height: '5px', background: '#ccc' }}>
-          <div style={{ position: 'absolute', width: `${progress.played * 100}%`, height: '100%', background: '#000' }} />
+        <div onClick={handleSeek} style={{ position: 'relative', height: '20px', background: Colors.gray }}>
+          <div style={{ position: 'absolute', width: `${progress.played * 100}%`, height: '100%', background: Colors.primary }} />
         </div>
-        <div>
-          <span>Time: {formatTime(progress.playedSeconds)}</span>
-          <span> / Duration: {formatTime(duration)}</span>
+        <div className='flex justify-center items-center m-5 gap-3'>
+          <span className='text-xl'>{formatTime(progress.playedSeconds)}</span>
+          <ButtonRound
+            onClick={handleStop}
+            icon='stop'
+            type={RoundedButtonSizes.medium}
+            dark />
+          <ButtonRound
+            icon={playing ? 'pause' : 'play'}
+            type={RoundedButtonSizes.large}
+            dark
+            onClick={handlePlayPause} />
+          <ButtonRound
+            icon='share'
+            type={RoundedButtonSizes.medium}
+            dark
+            onClick={handleRewind} />
+          <span className='text-xl'>{formatTime(duration)}</span>
         </div>
       </div>
     </div>
