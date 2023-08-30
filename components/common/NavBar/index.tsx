@@ -3,6 +3,7 @@ import { ShadButtonType } from "@/types/button"
 import { MdDensityMedium } from "react-icons/md"
 
 
+
 type NavBarProps = {
     title: string
     buttonVariant: ShadButtonType

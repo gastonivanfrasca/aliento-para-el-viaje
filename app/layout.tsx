@@ -2,7 +2,7 @@ import './globals.css'
 import { Jost } from 'next/font/google'
 import NavBar from '@/components/common/NavBar'
 import { ShadButtonTypes } from '@/types/button'
-import { Icons } from '@/types/icons'
+import { Analytics } from '@vercel/analytics/react';
 
 const jost = Jost({ subsets: ['latin'] })
 
@@ -21,6 +21,7 @@ export default function RootLayout({
           dark={false}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   )

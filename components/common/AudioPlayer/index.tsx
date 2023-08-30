@@ -34,12 +34,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
     playerRef.current?.seekTo(0);
   };
 
-  const handleRewind = () => {
-    playerRef.current?.seekTo(progress.playedSeconds - 10);
-  };
-
-  const handleForward = () => {
-    playerRef.current?.seekTo(progress.playedSeconds + 10);
+  const handleShare = () => {
+    navigator.share({
+      title: 'Aliento para el viaje',
+      text: 'Escucha el audio del día de Aliento para el viaje',
+      url: "https://alientoparaelviaje.com",
+    });
   };
 
   const handleProgress = (p: { played: number; playedSeconds: number; loaded: number; loadedSeconds: number }) => {
@@ -87,13 +87,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
             icon='share'
             type={RoundedButtonSizes.medium}
             dark
-            onClick={handleRewind} />
+            onClick={handleShare} />
           <span className='text-xl'>{formatTime(duration)}</span>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default AudioPlayer;
 
