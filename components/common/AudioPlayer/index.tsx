@@ -4,8 +4,6 @@ import ReactPlayer from 'react-player';
 import ButtonRound from '../ButtonRound';
 import { RoundedButtonSizes } from '@/types/button';
 import { Colors } from '@/types/colors';
-import { getLatestEpisode } from '@/lib/rss';
-import { ACTIONS, useContextReducerDispatch } from '@/hooks/useContextReducer';
 
 interface AudioPlayerProps {
   url: string;

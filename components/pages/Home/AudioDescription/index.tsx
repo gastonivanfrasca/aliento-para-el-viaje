@@ -1,6 +1,5 @@
-import { Alert, AlertTitle } from "@/components/ui/alert"
-import { GiPartyPopper } from "react-icons/gi"
 import { convertGMTStringToDate } from "@/lib/utils";
+import AwarenessMessage from "../AwarenessMessage";
 
 type AudioDescriptionProps = {
     title: string,
@@ -9,6 +8,7 @@ type AudioDescriptionProps = {
 
 const AudioDescription = (props: AudioDescriptionProps) => {
     const { title, date } = props;
+
     return (
         <div className="flex flex-col h-full max-w-md m-auto md:justify-center gap-8">
             <div>
@@ -16,10 +16,7 @@ const AudioDescription = (props: AudioDescriptionProps) => {
                 <h1 className="text-6xl font-bold text-primary">{title}</h1>
                 <p className="text-2xl  text-primary mt-10">{convertGMTStringToDate(date)}</p>
             </div>
-            <Alert className="w-50">
-                <GiPartyPopper size={20} />
-                <AlertTitle>Estamos renovando la web de Aliento para el viaje</AlertTitle>
-            </Alert>
+            <AwarenessMessage />
         </div>
     )
 }
