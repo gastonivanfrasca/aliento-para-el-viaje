@@ -37,3 +37,8 @@ public/workbox-.*.js
 public/workbox-.*.js.map
 public/sw.js
 public/sw.js.map
+public/worker-*
+public/workbox-*
+
+public/workbox-8f0e986c.js
+public/workbox-8f0e986c.js.map
