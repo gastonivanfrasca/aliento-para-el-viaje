@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^9.5.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
@@ -34,5 +35,8 @@
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6",
     "web-push": "^3.6.5"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2"
   }
 }
