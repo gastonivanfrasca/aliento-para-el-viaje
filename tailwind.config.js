@@ -10,6 +10,7 @@ const config = {
     colors: {
       ...colors,
       primary: '#190631',
+      primaryLight: '#4F2189',
       secondary: '#FF7B01',
       gray: '#D9D9D9',
     },

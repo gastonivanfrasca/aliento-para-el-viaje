@@ -20,7 +20,7 @@ const ButtonRound = (props: ButtonRoundProps) => {
     }
 
     const darkStyles = {
-        dark: 'bg-primary text-white',
+        dark: 'bg-gradient-to-r from-primary to-primaryLight text-white',
         light: 'bg-white text-gray-800',
     }
 

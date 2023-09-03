@@ -27,15 +27,14 @@ const isWeekend = () => {
   return today === 6 || today === 0
 }
 
-export default async function Home() {
-  let audioOfTheDay = null
+const getAudioOfTheDay = async (): Promise<Episode> => {
   const storedAudio = await kv.get(AUDIO_OF_THE_DAY_KEY) as Episode
   const storedAudioDate = convertGMTStringToDate(storedAudio.pubDate)
   const currentDate = convertGMTStringToDate(new Date().toDateString())
   if (storedAudioDate === currentDate || isWeekend()) {
-    audioOfTheDay = storedAudio
+    return storedAudio
   } else {
-    audioOfTheDay = await getLatestEpisode()
+    const audioOfTheDay = await getLatestEpisode()
     if (convertGMTStringToDate(audioOfTheDay.pubDate) === currentDate) {
       va.track('Stored rss audio and sended notification')
       await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(audioOfTheDay))
@@ -44,7 +43,12 @@ export default async function Home() {
         webpush.sendNotification(sub, 'Ya está disponible el audio del día');
       });
     }
+    return audioOfTheDay
   }
+}
+
+export default async function Home() {
+  const audioOfTheDay = await getAudioOfTheDay()
 
   return (
     <>
