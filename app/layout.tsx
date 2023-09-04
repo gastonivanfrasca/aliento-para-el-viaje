@@ -1,9 +1,8 @@
 import './globals.css'
 import { Jost } from 'next/font/google'
 import NavBar from '@/components/common/NavBar'
-import { ShadButtonTypes } from '@/types/button'
 import { Analytics } from '@vercel/analytics/react';
-
+import { get } from '@vercel/edge-config';
 
 const jost = Jost({ subsets: ['latin'] })
 
@@ -12,18 +11,20 @@ export const metadata = {
   themeColor: "#ffffff",
 };
 
-export default function RootLayout({
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const notificationButtonFlag = await get('notificationButton')
+  const notificationButton = notificationButtonFlag === 'true' ? true : false
   return (
     <html lang="en" >
       <body className={jost.className}>
         <NavBar
           title="Audio del día"
-          buttonVariant={ShadButtonTypes.ghost}
-          buttonIconSize={18}
+          notificationButton={notificationButton}
           dark={false}
         />
         {children}

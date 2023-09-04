@@ -1,22 +1,15 @@
-import { Button } from "@/components/ui/button"
-import { ShadButtonType } from "@/types/button"
-import { MdDensityMedium } from "react-icons/md"
-
-
+import React from "react"
+import NotificationButton from "../NotificationButton"
 
 type NavBarProps = {
     title: string
-    buttonVariant: ShadButtonType
-    buttonIcon?: string
-    buttonIconSize: number
+    notificationButton: boolean
     dark: boolean
 }
 
 const NavBar = ({
     title,
-    buttonVariant,
-    buttonIcon,
-    buttonIconSize,
+    notificationButton,
     dark,
 }: NavBarProps) => {
 
@@ -25,21 +18,10 @@ const NavBar = ({
 
     return (
         <div className={`flex p-8 items-center w-full gap-10 h-[30px] justify-between shadow px-10 pl-[22px] ${themeText} ${themeBackground}`}>
-            {buttonIcon && <Button variant={buttonVariant} size={"icon"}>
-                {iconFromStr(buttonIcon, buttonIconSize)}
-            </Button>}
             <h1 className={`${themeText} text-lg`}>{title}</h1>
+            {notificationButton && <NotificationButton  />}
         </div>
     )
-}
-
-const iconFromStr = (str: string | undefined, size: number | undefined) => {
-    switch (str) {
-        case 'menu':
-            return <MdDensityMedium size={size} />
-        default:
-            return <MdDensityMedium size={size} />
-    }
 }
 
 export default NavBar
