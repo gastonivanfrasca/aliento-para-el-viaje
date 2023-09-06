@@ -1,10 +1,9 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
- 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
 
 export const convertGMTStringToDate = (gmtString: string): string => {
   try {
@@ -22,4 +21,8 @@ export const convertGMTStringToDate = (gmtString: string): string => {
     console.error('Error al convertir la fecha:', error);
     return '';
   }
+}
+
+export const onDevEnv = () => {
+  return process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV === 'preview'
 }

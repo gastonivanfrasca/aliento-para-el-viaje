@@ -1,8 +1,21 @@
 import { kv } from "@vercel/kv";
 import { Subscriptions, Subscription } from "@/types/subscription";
+import { Ratelimit } from '@upstash/ratelimit'
 
+const ratelimit = new Ratelimit({
+    redis: kv,
+    limiter: Ratelimit.slidingWindow(5, '10 s'),
+  })
 
 export async function POST(request: Request) {
+    //  @ts-ignore
+    const ip = request.ip ?? '127.0.0.1'
+    const { success } = await ratelimit.limit(ip)
+    if (!success) {
+        return new Response('Too many requests', {
+            status: 429
+        })
+    }
     try {
         const body = await request.json();
         const subscription = body;
@@ -15,6 +28,7 @@ export async function POST(request: Request) {
                 })
             }
             subscriptions.push(subscription);
+            kv.set('subscriptions', subscriptions);
         })
         return new Response('Subscription saved', {
             status: 200

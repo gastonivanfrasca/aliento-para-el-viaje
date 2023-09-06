@@ -8,7 +8,6 @@ const NotificationButton = () => {
     const [isSupported, setIsSupported] = useState(false)
 
     async function subscribeUser(): Promise<void> {
-        console.log('subscribeUser');
         // Verificar si el navegador soporta notificaciones y Service Workers
         if ('serviceWorker' in navigator && 'PushManager' in window) {
             try {
@@ -16,7 +15,6 @@ const NotificationButton = () => {
                 const sw = await navigator.serviceWorker.ready;
                 console.log('service worker ready')
                 const permission = await Notification.requestPermission();
-                console.log('perimision requested')
                 if (permission !== 'granted') {
                     va.track('userDeniedNotifications');
                     return;
@@ -35,7 +33,6 @@ const NotificationButton = () => {
                     },
                     body: JSON.stringify(subscription)
                 });
-                console.log('subscribed');
                 setInLocalStorageSubscriptionToPushStatus(true);
                 setIsSubscribed(true);
 

@@ -8,6 +8,6 @@ self.addEventListener('push', function (event) {
   //@ts-ignore
   event.waitUntil(
     //@ts-ignore
-    self.registration.showNotification('Aliento para el viaje', options)
+    self.registration.showNotification('Audio del día disponible', options)
   );
 });
