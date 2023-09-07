@@ -1,5 +1,5 @@
 import React from "react"
-import { Menu } from "lucide-react"
+import Menu from "../Menu"
 
 type NavBarProps = {
     title: string

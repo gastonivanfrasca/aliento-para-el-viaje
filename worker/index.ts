@@ -1,8 +1,10 @@
-self.addEventListener('push', function (event: PushEvent) {
+// @ts-nocheck
+
+self.addEventListener('push', function (event) {
   if (!event.data) {
     return;
   }
-  const options: NotificationOptions = {
+  const options = {
     body: event.data.text(),
     icon: '/icon.png',
     badge: '/badge.png'
@@ -12,13 +14,12 @@ self.addEventListener('push', function (event: PushEvent) {
   );
 });
 
-self.addEventListener('notificationclick', function (event: NotificationClickEvent) {
+self.addEventListener('notificationclick', function (event) {
   event.notification.close();
   clients.openWindow('https://www.alientoparaelviaje.com/');
 });
 
-
-(self as any).addEventListener('pushsubscriptionchange', function (event: PushSubscriptionChange) {
+addEventListener('pushsubscriptionchange', function (event) {
   event.waitUntil(
     fetch('https://www.alientoparaelviaje.com/renew-sub', {
       method: 'POST',
