@@ -42,14 +42,10 @@ export async function POST(request: Request) {
         const body = await request.json();
         const audioOfTheDay = body as Episode;
         const subscriptions = await kv.get('subscriptions') as Subscriptions
-        subscriptions.forEach( async (sub) => {
-            try {
-                const detail = await webpush.sendNotification(sub, audioOfTheDay.title);
-                console.log(detail)
-            } catch (error) {
-                console.log('error', error)
-            }
-
+        subscriptions.forEach((sub) => {
+            webpush.sendNotification(sub, JSON.stringify(audioOfTheDay))
+                .then((res: any) => console.log(res))
+                .catch((err: any) => console.log(err));
         });
         return new Response('OK', {
             status: 200
