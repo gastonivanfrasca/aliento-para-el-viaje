@@ -1,5 +1,5 @@
 import React from "react"
-import NotificationButton from "../NotificationButton"
+import { Menu } from "lucide-react"
 
 type NavBarProps = {
     title: string
@@ -18,8 +18,8 @@ const NavBar = ({
 
     return (
         <div className={`flex p-8 items-center w-full gap-10 h-[30px] justify-between shadow px-10 pl-[22px] ${themeText} ${themeBackground}`}>
+            {notificationButton && <Menu />}
             <h1 className={`${themeText} text-lg`}>{title}</h1>
-            {notificationButton && <NotificationButton  />}
         </div>
     )
 }

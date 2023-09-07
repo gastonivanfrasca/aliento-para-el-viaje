@@ -1,7 +1,8 @@
 "use client"
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MdNotifications } from 'react-icons/md'
 import va from '@vercel/analytics';
+import { Switch } from '@/components/ui/switch';
 
 const NotificationButton = () => {
     const [isSubscribed, setIsSubscribed] = useState(false)
@@ -26,14 +27,13 @@ const NotificationButton = () => {
                     applicationServerKey: process.env.NEXT_PUBLIC_VAP_PUB
                 });
 
-                await fetch('/push-subs', {
+                await fetch('/api/push-subs', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(subscription)
                 });
-                setInLocalStorageSubscriptionToPushStatus(true);
                 setIsSubscribed(true);
 
             } catch (err) {
@@ -50,10 +50,10 @@ const NotificationButton = () => {
             try {
                 const sw = await navigator.serviceWorker.ready;
                 const subscription = await sw.pushManager.getSubscription();
-    
+
                 if (subscription) {
                     await subscription.unsubscribe();
-                    await fetch('/push-subs', {
+                    await fetch('/api/push-subs', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -61,9 +61,8 @@ const NotificationButton = () => {
                         body: JSON.stringify(subscription)
                     });
                 }
-                
+
                 console.log('unsubscribed');
-                setInLocalStorageSubscriptionToPushStatus(false);
                 setIsSubscribed(false);
             } catch (err) {
                 console.log('Error al desuscribirse', err);
@@ -83,14 +82,15 @@ const NotificationButton = () => {
     }, [isSupported])
 
     useEffect(() => {
-        const checkIfUserHasNotificationsEnabled = () => {
-            if (typeof window !== 'undefined') {
-                return Notification.permission === 'granted'
-            }
-            return false
-        }
-        const subscriptionToPush = JSON.parse(localStorage.getItem('subscriptionToPush') || 'false')
-        setIsSubscribed(checkIfUserHasNotificationsEnabled() && subscriptionToPush)
+        navigator.serviceWorker.ready.then(function (registration) {
+            registration.pushManager.getSubscription().then(function (subscription) {
+                if (subscription) {
+                    setIsSubscribed(true);
+                } else {
+                    setIsSubscribed(false);
+                }
+            });
+        });
 
     }, [isSubscribed])
 
@@ -100,17 +100,12 @@ const NotificationButton = () => {
 
 
     return (
-        <button onClick={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} >
-            <MdNotifications size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
+        <button onClick={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} className='flex flex-row gap-2 items-center' >
+            <Switch onCheckedChange={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} checked={isSubscribed} />
+            <MdNotifications size={20} className={isSubscribed ? 'text-primaryLight' : 'text-gray'} />
+            <p className='text-primaryLight font-bold'>Notificaciones</p>
         </button>
     )
-}
-
-
-const setInLocalStorageSubscriptionToPushStatus = (status: boolean) => {
-    if (typeof window !== 'undefined') {
-        localStorage.setItem('subscriptionToPush', JSON.stringify(status))
-    }
 }
 
 export default NotificationButton
