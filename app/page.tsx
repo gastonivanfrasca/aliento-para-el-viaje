@@ -20,9 +20,6 @@ const getAudioOfTheDay = async (): Promise<Episode> => {
     return storedAudio
   } else {
     const audioOfTheDay = await getLatestEpisode()
-    if (convertGMTStringToDate(audioOfTheDay.pubDate) === currentDate) {
-      await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(audioOfTheDay))
-    }
     return audioOfTheDay
   }
 }

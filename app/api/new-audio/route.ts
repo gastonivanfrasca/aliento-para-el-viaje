@@ -1,4 +1,3 @@
-import { Subscriptions } from "@/types/subscription";
 import { Episode } from '@/lib/rss/types';
 import { kv } from "@vercel/kv";
 import { Ratelimit } from '@upstash/ratelimit'
@@ -9,21 +8,6 @@ const ratelimit = new Ratelimit({
 })
 
 const AUDIO_OF_THE_DAY_KEY = 'audioOfTheDay'
-
-const webpush = require('web-push');
-
-
-const vapidKeys = {
-    publicKey: process.env.VAP_PUB,
-    privateKey: process.env.VAP
-};
-
-webpush.setVapidDetails(
-    'mailto:alientoparaelviajeaudios@gmail.com',
-    vapidKeys.publicKey,
-    vapidKeys.privateKey
-);
-
 
 export async function POST(request: Request) {
     //  @ts-ignore
@@ -46,10 +30,6 @@ export async function POST(request: Request) {
         const audioOfTheDay = body as Episode;
         await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(audioOfTheDay));
         await transcribeAudio(process.env.ASSEMBLY_API!, audioOfTheDay.enclosure["@_url"])
-        const subscriptions = await kv.get('subscriptions') as Subscriptions
-        subscriptions.forEach((sub) => {
-            webpush.sendNotification(sub, body.title);
-        });
         return new Response('OK', {
             status: 200
         })
@@ -89,7 +69,7 @@ async function transcribeAudio(api_token: string, audio_url: string) {
         method: "POST",
         body: JSON.stringify({
             audio_url,
-            webhook_url: 'https://www.alientoparaelviaje.com/save-transcription',
+            webhook_url: 'https://www.alientoparaelviaje.com/api/save-transcription',
             language_code: 'es'
         }),
         headers,
