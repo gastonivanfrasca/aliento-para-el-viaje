@@ -32,7 +32,7 @@ export default async function Home() {
       <main className="px-10 py-8" style={{ height: 'calc(100vh - 220px)' }}>
         <AudioDescription title={audioOfTheDay.title} date={audioOfTheDay.pubDate} transcription={transcription} />
       </main>
-      <footer className='absolute'>
+      <footer className='absolute bottom-0'>
         <AudioPlayer url={audioOfTheDay.enclosure["@_url"]} customStyles={{ width: '100vw' }} />
       </footer>
     </>

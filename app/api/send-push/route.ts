@@ -45,7 +45,20 @@ export async function POST(request: Request) {
         subscriptions.forEach((sub) => {
             webpush.sendNotification(sub, JSON.stringify(audioOfTheDay.title))
                 .then((res: any) => console.log(res))
-                .catch((err: any) => console.log(err));
+                .catch((err: any) => {
+                    if (err.statusCode === 410) {
+                        kv.get('subscriptions').then((subs) => {
+                            const subscriptions = subs as Subscriptions;
+                            const alreadySubscribed = checkIfAlreadySubscribed(sub, subscriptions);
+                            if (!alreadySubscribed) {
+                                return new Response('Not subscribed', {
+                                    status: 200
+                                })
+                            }
+                            subscriptions.splice(subscriptions.indexOf(alreadySubscribed), 1);
+                        })
+                    }
+                });
         });
         return new Response('OK', {
             status: 200
@@ -56,6 +69,13 @@ export async function POST(request: Request) {
         })
     }
 
+}
+
+const checkIfAlreadySubscribed = (subscription: any, subscriptions: Subscriptions) => {
+    const alreadySubscribed = subscriptions.find((sub) => {
+        return sub.endpoint === subscription.endpoint;
+    });
+    return alreadySubscribed;
 }
 
 

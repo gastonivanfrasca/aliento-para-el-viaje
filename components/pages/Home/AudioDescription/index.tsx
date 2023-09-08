@@ -1,16 +1,5 @@
 import { convertGMTStringToDate } from "@/lib/utils";
 import AwarenessMessage from "../AwarenessMessage";
-import { onDevEnv } from "@/lib/utils";
-import { get } from '@vercel/edge-config';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { IoMdBook } from 'react-icons/io'
 import DialogTranscription from "../TranscriptionDialog";
 
 
