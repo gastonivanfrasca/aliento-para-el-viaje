@@ -4,6 +4,20 @@ import { MdNotifications } from 'react-icons/md'
 import va from '@vercel/analytics';
 import { Switch } from '@/components/ui/switch';
 
+const base64ToUint8Array = (base64: any) => {
+    const padding = '='.repeat((4 - (base64.length % 4)) % 4)
+    const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/')
+
+    const rawData = window.atob(b64)
+    const outputArray = new Uint8Array(rawData.length)
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i)
+    }
+    return outputArray
+}
+
+
 const NotificationButton = () => {
     const [isSubscribed, setIsSubscribed] = useState(false)
     const [isSupported, setIsSupported] = useState(false)
@@ -12,9 +26,7 @@ const NotificationButton = () => {
         // Verificar si el navegador soporta notificaciones y Service Workers
         if ('serviceWorker' in navigator && 'PushManager' in window) {
             try {
-                console.log('service worker in navigator and push manager in window')
                 const sw = await navigator.serviceWorker.ready;
-                console.log('service worker ready')
                 const permission = await Notification.requestPermission();
                 if (permission !== 'granted') {
                     va.track('userDeniedNotifications');
@@ -24,7 +36,7 @@ const NotificationButton = () => {
                 va.track('userAcceptedNotifications');
                 const subscription = await sw.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: process.env.NEXT_PUBLIC_VAP_PUB
+                    applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_VAP_PUB)
                 });
 
                 await fetch('/api/push-subs', {
@@ -82,17 +94,18 @@ const NotificationButton = () => {
     }, [isSupported])
 
     useEffect(() => {
-        navigator.serviceWorker.ready.then(function (registration) {
-            registration.pushManager.getSubscription().then(function (subscription) {
-                if (subscription) {
-                    setIsSubscribed(true);
-                } else {
-                    setIsSubscribed(false);
-                }
-            });
-        });
+        //@ts-ignore
+        if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+            navigator.serviceWorker.ready.then(reg => {
+                reg.pushManager.getSubscription().then(sub => {
+                    if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+                        setIsSubscribed(true)
+                    }
+                })
+            })
+        }
 
-    }, [isSubscribed])
+    }, [])
 
     if (!isSupported) {
         return null

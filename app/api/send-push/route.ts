@@ -43,7 +43,7 @@ export async function POST(request: Request) {
         const audioOfTheDay = body as Episode;
         const subscriptions = await kv.get('subscriptions') as Subscriptions
         subscriptions.forEach((sub) => {
-            webpush.sendNotification(sub, JSON.stringify(audioOfTheDay.title))
+            webpush.sendNotification(sub, audioOfTheDay.title)
                 .then((res: any) => console.log(res))
                 .catch((err: any) => {
                     if (err.statusCode === 410) {

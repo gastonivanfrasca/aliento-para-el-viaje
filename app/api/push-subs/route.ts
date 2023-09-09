@@ -5,7 +5,7 @@ import { Ratelimit } from '@upstash/ratelimit'
 const ratelimit = new Ratelimit({
     redis: kv,
     limiter: Ratelimit.slidingWindow(5, '10 s'),
-  })
+})
 
 export async function POST(request: Request) {
     //  @ts-ignore

@@ -1,18 +1,17 @@
-// @ts-nocheck
+//@ts-nocheck
 
 self.addEventListener('push', function (event) {
-  if (!event.data) {
-    return;
+  let text = "Ingresa a la app para escucharlo"
+  if (event.data) {
+    text = event.data.text()
   }
-  const options = {
-    body: event.data.text(),
-    icon: '/icon.png',
-    badge: '/badge.png'
-  };
   event.waitUntil(
-    self.registration.showNotification('Audio del día disponible', options)
-  );
-});
+    registration.showNotification('Audio del día disponible', {
+      body: text,
+      icon: '/icons/android-chrome-192x192.png'
+    })
+  )
+})
 
 self.addEventListener('notificationclick', function (event) {
   event.notification.close();
@@ -27,8 +26,8 @@ addEventListener('pushsubscriptionchange', function (event) {
       body: JSON.stringify({
         old_endpoint: event.oldSubscription ? event.oldSubscription.endpoint : null,
         new_endpoint: event.newSubscription ? event.newSubscription.endpoint : null,
-        new_p256dh: event.newSubscription ? event.newSubscription.toJSON().keys!.p256dh : null,
-        new_auth: event.newSubscription ? event.newSubscription.toJSON().keys!.auth : null
+        new_p256dh: event.newSubscription ? event.newSubscription.toJSON().keys.p256dh : null,
+        new_auth: event.newSubscription ? event.newSubscription.toJSON().keys.auth : null
       })
     })
   );
