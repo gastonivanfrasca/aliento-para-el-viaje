@@ -1,14 +1,13 @@
 import React from "react"
 import Menu from "../Menu"
+import NavBarTitle from "../NavBarTitle"
 
 type NavBarProps = {
-    title: string
     notificationButton: boolean
     dark: boolean
 }
 
 const NavBar = ({
-    title,
     notificationButton,
     dark,
 }: NavBarProps) => {
@@ -19,7 +18,7 @@ const NavBar = ({
     return (
         <div className={`flex p-8 items-center w-full gap-10 h-[30px] justify-between shadow px-10 pl-[22px] ${themeText} ${themeBackground}`}>
             {notificationButton && <Menu />}
-            <h1 className={`${themeText} text-lg`}>{title}</h1>
+            <NavBarTitle themeText={themeText} />
         </div>
     )
 }

@@ -115,8 +115,8 @@ const NotificationButton = () => {
     return (
         <button onClick={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} className='flex flex-row gap-2 items-center' >
             <Switch onCheckedChange={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} checked={isSubscribed} />
-            <MdNotifications size={20} className={isSubscribed ? 'text-primaryLight' : 'text-gray'} />
-            <p className='text-primaryLight font-bold'>Notificaciones</p>
+            <MdNotifications size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
+            <p className='text-primary font-bold'>Notificaciones</p>
         </button>
     )
 }

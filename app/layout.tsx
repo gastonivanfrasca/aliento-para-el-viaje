@@ -29,10 +29,9 @@ export default async function RootLayout({
 }) {
   const notificationButton = await shouldShowNotificationButton()
   return (
-    <html lang="en" >
+    <html lang="es" >
       <body className={jost.className}>
         <NavBar
-          title="Audio del día"
           notificationButton={notificationButton}
           dark={false}
         />
@@ -41,4 +40,9 @@ export default async function RootLayout({
       </body>
     </html>
   )
+}
+
+const getPageName = (path: string): string => {
+  const pageName = path.split('/')[1]
+  return pageName ? pageName : 'home'
 }
