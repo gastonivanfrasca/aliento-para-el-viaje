@@ -14,8 +14,8 @@ const Information = (props: InformationProps) => {
     return (
         <div className="mb-4 md:mb-16">
             <h2 className='mb-2 font-bold text-xl'>{title}</h2>
-            <p className='mb-4'>{description}</p>
-            <div className='flex flex-row gap-8 text-xl'>
+            <p className='mb-4 text-lg'>{description}</p>
+            <div className='flex flex-row gap-8'>
                 {actions.map((action, index) => (
                     <button key={index} onClick={() => window.open(action.link, '_blank')} className='bg-transparent cursor-pointer'>{action.component}</button>
                 ))}

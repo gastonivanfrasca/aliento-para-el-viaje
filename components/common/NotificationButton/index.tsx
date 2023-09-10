@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
-import { MdNotifications } from 'react-icons/md'
+import { MdNotifications, MdNotificationsOff } from 'react-icons/md'
 import va from '@vercel/analytics';
 import { Switch } from '@/components/ui/switch';
 
@@ -114,6 +114,7 @@ const NotificationButton = () => {
 
     return (
         <button onClick={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} className='flex flex-row gap-2 items-center' >
+            <MdNotificationsOff size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
             <Switch onCheckedChange={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} checked={isSubscribed} />
             <MdNotifications size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
             <p className='text-primary font-bold'>Notificaciones</p>

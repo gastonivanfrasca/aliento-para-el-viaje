@@ -20,7 +20,7 @@ const DialogTranscription = ({ transcription, title }: { transcription: string, 
             <DialogContent className="overflow-scroll bg-white m-0 max-w-[99%] max-h-[99vh] border-none shadow-md md:w-screen" style={{ borderBottom: "5px solid white", borderTop: "5px solid white" }}>
                 <DialogHeader>
                     <DialogTitle className="p-2 text-xl text-left font-bold">{title}</DialogTitle>
-                    <DialogDescription className="p-2 text-lg text-left md:p-8 md:px-40 font-light">
+                    <DialogDescription className="p-2 text-lg text-left md:p-8 md:px-40 font-normal">
                         {transcription}
                     </DialogDescription>
                 </DialogHeader>

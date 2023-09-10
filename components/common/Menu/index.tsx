@@ -11,6 +11,20 @@ import NotificationButton from "@/components/common/NotificationButton"
 import { MdMenu, MdInfo, MdHome } from 'react-icons/md'
 import Link from "next/link"
 
+type MenuLinkProps = {
+    href: string;
+    children: React.ReactNode;
+}
+
+const MenuLink = ({ href, children }: MenuLinkProps) => {
+    return (
+        <Link href={href} passHref>
+            <div className="font-bold text-primary flex flex-row gap-2 items-center outline p-4 outline-warmGray-700 rounded-lg">
+                {children}
+            </div>
+        </Link>
+    )
+}
 
 const Menu = () => {
     return (
@@ -18,15 +32,15 @@ const Menu = () => {
             <SheetTrigger><MdMenu className="w-6 h-6" /></SheetTrigger>
             <SheetContent className="bg-white" side={"left"}>
                 <SheetHeader>
-                <SheetTitle className="text-2xl font-bold  bg-gradient-to-r from-primary to-primaryLight bg-clip-text text-primaryLight mb-5 pb-2">APV</SheetTitle>
+                    <SheetTitle className="text-2xl font-bold  bg-gradient-to-r from-primary to-primaryLight bg-clip-text text-primaryLight mb-5 pb-2">APV</SheetTitle>
                     <SheetDescription className="mt-8">
-                        <div className="mb-8">
-                        <Link href={"/"} className="underline font-bold text-primary flex flex-row gap-2 items-center mb-8">
+                        <div className="mb-8 flex flex-col gap-4">
+                            <MenuLink href={"/"}>
                                 <MdHome /> Audio del día
-                            </Link>
-                            <Link href={"/about-author"} className="underline font-bold text-primary flex flex-row gap-2 items-center">
+                            </MenuLink>
+                            <MenuLink href={"/about-author"}>
                                 <MdInfo /> ¿Qué es Aliento para el viaje?
-                            </Link>
+                            </MenuLink>
                         </div>
                         <Separator className="my-8 text-primary bg-primary" />
                         <NotificationButton />
