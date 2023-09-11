@@ -30,10 +30,10 @@ export default async function Home() {
   const transcription = await kv.get('transcription') as string
   return (
     <>
-      <main className="px-10 py-8" style={{ height: 'calc(100vh - 220px)' }}>
+      <main className="px-10 py-8 flex-grow">
         <AudioDescription title={audioOfTheDay.title} date={audioOfTheDay.pubDate} transcription={transcription} />
       </main>
-      <footer className='absolute sm:max-sm:bottom-0'>
+      <footer>
         <AudioPlayer url={audioOfTheDay.enclosure["@_url"]} customStyles={{ width: '100vw' }} />
       </footer>
       <PageTitleSetter title={"Audio del día"} />

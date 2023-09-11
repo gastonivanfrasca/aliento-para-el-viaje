@@ -40,8 +40,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" >
-      <body className={jost.className}>
+    <html lang="es" className='h-full'>
+      <body className={`${jost.className} flex flex-col h-full`}>
         <NavBar
           notificationButton={true}
           dark={false}

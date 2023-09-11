@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import NotificationButton from "@/components/common/NotificationButton"
+import InstallButton from "../InstallButton"
 import { MdMenu, MdInfo, MdHome } from 'react-icons/md'
 import Link from "next/link"
 
@@ -38,8 +39,9 @@ const Menu = () => {
                                 <MdHome /> Audio del día
                             </MenuLink>
                             <MenuLink href={"/about-author"}>
-                                <MdInfo /> ¿Qué es Aliento para el viaje?
+                                <MdInfo /> Sobre los audios
                             </MenuLink>
+                            <InstallButton />
                         </div>
                         <Separator className="my-8 text-primary bg-primary" />
                         <NotificationButton />
