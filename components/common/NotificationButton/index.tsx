@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { MdNotifications, MdNotificationsOff } from 'react-icons/md'
 import va from '@vercel/analytics';
-import { Switch } from '@/components/ui/switch';
+import SwitchWithIcons from '../SwitchWithIcons';
 
 const base64ToUint8Array = (base64: any) => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -113,12 +113,13 @@ const NotificationButton = () => {
 
 
     return (
-        <button onClick={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} className='flex flex-row gap-2 items-center' >
-            <MdNotificationsOff size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
-            <Switch onCheckedChange={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()} checked={isSubscribed} />
-            <MdNotifications size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />
-            <p className='text-primary font-bold'>Notificaciones</p>
-        </button>
+        <SwitchWithIcons
+            onCheckedChange={isSubscribed ? () => unsubscribeUser() : () => subscribeUser()}
+            leftIcon={<MdNotificationsOff size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />}
+            rightIcon={<MdNotifications size={20} className={isSubscribed ? 'text-primary' : 'text-gray'} />}
+            checked={isSubscribed}
+            text='Notificaciones'
+        />
     )
 }
 
