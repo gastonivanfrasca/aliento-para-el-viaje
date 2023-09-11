@@ -41,8 +41,3 @@ export default async function RootLayout({
     </html>
   )
 }
-
-const getPageName = (path: string): string => {
-  const pageName = path.split('/')[1]
-  return pageName ? pageName : 'home'
-}

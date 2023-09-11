@@ -1,7 +1,6 @@
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
     SheetHeader,
     SheetTrigger,
     SheetTitle
@@ -10,6 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import NotificationButton from "@/components/common/NotificationButton"
 import { MdMenu, MdInfo, MdHome } from 'react-icons/md'
 import Link from "next/link"
+import LangSwitcher from "../LangSwitcher"
 
 type MenuLinkProps = {
     href: string;
@@ -30,10 +30,10 @@ const Menu = () => {
     return (
         <Sheet>
             <SheetTrigger><MdMenu className="w-6 h-6" /></SheetTrigger>
-            <SheetContent className="bg-white" side={"left"}>
+            <SheetContent className="bg-white border-none shadow-md" side={"left"}>
                 <SheetHeader>
                     <SheetTitle className="text-2xl font-bold  bg-gradient-to-r from-primary to-primaryLight bg-clip-text text-primaryLight mb-5 pb-2">APV</SheetTitle>
-                    <SheetDescription className="mt-8">
+                    <div className="mt-8" >
                         <div className="mb-8 flex flex-col gap-4">
                             <MenuLink href={"/"}>
                                 <MdHome /> Audio del día
@@ -44,7 +44,7 @@ const Menu = () => {
                         </div>
                         <Separator className="my-8 text-primary bg-primary" />
                         <NotificationButton />
-                    </SheetDescription>
+                    </div>
                 </SheetHeader>
             </SheetContent>
         </Sheet>
