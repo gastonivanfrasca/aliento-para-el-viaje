@@ -12,22 +12,12 @@ export const metadata = {
   themeColor: "#ffffff",
 };
 
-
-async function shouldShowNotificationButton(): Promise<boolean> {
-  if (onDevEnv()) {
-    return true;
-  } else {
-    const notificationButtonFlag = await get('notificationButton');
-    return notificationButtonFlag === 'true'
-  }
-}
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const notificationButton = await shouldShowNotificationButton()
+  const notificationButton = true
   return (
     <html lang="es" >
       <body className={jost.className}>
