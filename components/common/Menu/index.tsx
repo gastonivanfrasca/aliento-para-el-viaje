@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator"
 import NotificationButton from "@/components/common/NotificationButton"
 import { MdMenu, MdInfo, MdHome } from 'react-icons/md'
 import Link from "next/link"
-import LangSwitcher from "../LangSwitcher"
 
 type MenuLinkProps = {
     href: string;
