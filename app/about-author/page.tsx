@@ -4,7 +4,7 @@ import PageTitleSetter from '@/components/common/PageTitleSetter';
 
 const AboutAuthor = () => {
     return (
-        <div className="flex p-10 flex-col justify-center items-start flex-shrink-0 gap-8 w-11/12 h-full m-auto md:w-1/2 md:mt-8">
+        <div className="flex p-10 flex-col justify-center items-start gap-8 h-full m-auto md:w-1/2 md:mt-8">
             <Information
                 title="Aliento para el viaje"
                 description="La vida es un viaje, una travesía del corazón. Tiene momentos maravillosos y tramos inesperados.Los audios Aliento para el viaje son un recordatorio de que la esperanza de Dios y su amor incomparable nos acompañan en cada tramo del camino."
