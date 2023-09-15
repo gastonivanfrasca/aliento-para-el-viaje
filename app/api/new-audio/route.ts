@@ -28,6 +28,8 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const audioOfTheDay = body as Episode;
+        const priortext = await getPriorAudioText();
+        audioOfTheDay.text = priortext || await kv.get('transcription') as string;
         await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(audioOfTheDay));
         await transcribeAudio(process.env.ASSEMBLY_API!, audioOfTheDay.enclosure["@_url"])
         return new Response('OK', {
@@ -77,4 +79,9 @@ async function transcribeAudio(api_token: string, audio_url: string) {
     } catch (error) {
         console.log('error', error)
     }
+}
+
+const getPriorAudioText = async () => {
+    const priorAudio = await kv.get(AUDIO_OF_THE_DAY_KEY) as Episode;
+    return priorAudio.text;
 }

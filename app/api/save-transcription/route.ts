@@ -1,6 +1,7 @@
 import { kv } from '@vercel/kv';
 import axios from 'axios'
 import { Ratelimit } from '@upstash/ratelimit'
+import { Episode } from '@/lib/rss/types';
 
 const ratelimit = new Ratelimit({
     redis: kv,
@@ -8,6 +9,8 @@ const ratelimit = new Ratelimit({
 })
 
 const baseUrl = 'https://api.assemblyai.com/v2'
+
+const AUDIO_OF_THE_DAY_KEY = 'audioOfTheDay'
 
 const headers = {
     authorization: process.env.ASSEMBLY_API,
@@ -30,8 +33,9 @@ export async function POST(request: Request) {
             headers: headers
         })
         const transcriptionResult = pollingResponse.data
-        console.log(transcriptionResult.text)
-        kv.set('transcription', transcriptionResult.text)
+        const storedAudio = await getStoredAudio() as Episode
+        storedAudio.text = transcriptionResult.text
+        await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(storedAudio))
 
         return new Response('OK', {
             status: 200
@@ -55,4 +59,10 @@ const checkRequestSignature = async (request: Request) => {
     } else {
         return false;
     }
+}
+
+
+const getStoredAudio = async () => {
+    const storedAudio = await kv.get('audioOfTheDay')
+    return storedAudio
 }

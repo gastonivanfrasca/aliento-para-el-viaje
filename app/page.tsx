@@ -27,7 +27,7 @@ const getAudioOfTheDay = async (): Promise<Episode> => {
 
 export default async function Home() {
   const audioOfTheDay = await getAudioOfTheDay()
-  const transcription = await kv.get('transcription') as string
+  const transcription = audioOfTheDay.text ? audioOfTheDay.text : await kv.get('transcription') as string
   return (
     <>
       <main className="px-10 py-8 flex-grow">
