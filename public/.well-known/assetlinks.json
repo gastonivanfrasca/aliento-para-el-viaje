@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.alientoparaelviaje.twa",
+    "sha256_cert_fingerprints": [
+      "B7:56:DD:65:4D:29:83:E5:0F:85:C0:EC:D2:97:89:E8:15:D0:42:EA:FB:3D:3D:70:93:17:44:66:15:9B:3C:AB"
+    ]
+  }
+}]
