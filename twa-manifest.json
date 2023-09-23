@@ -3,7 +3,7 @@
   "host": "alientoparaelviaje.com",
   "name": "Aliento para el viaje",
   "launcherName": "APV",
-  "display": "standalone",
+  "display": "minimal-ui",
   "themeColor": "#FFFFFF",
   "themeColorDark": "#000000",
   "navigationColor": "#000000",
@@ -20,8 +20,8 @@
     "path": "/Users/gastonfrasca/projects/aliento-para-el-viaje/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "3",
-  "appVersionCode": 3,
+  "appVersionName": "1",
+  "appVersionCode": 1,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://alientoparaelviaje.com/manifest.json",
@@ -43,5 +43,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "3"
+  "appVersion": "1"
 }
