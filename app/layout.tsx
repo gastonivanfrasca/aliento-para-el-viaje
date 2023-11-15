@@ -7,7 +7,6 @@ const jost = Jost({ subsets: ['latin'] })
 
 export const metadata = {
   manifest: "/manifest.json",
-  themeColor: "#ffffff",
   favicon: "/favicon.ico",
   title: "Aliento para el viaje",
   description: "Aliento para el viaje es un podcast que busca inspirar a los oyentes a través de la Palabra de Dios.",
@@ -24,13 +23,6 @@ export const metadata = {
     site_name: "Aliento para el viaje",
     imageWidth: 512,
     imageHeight: 512,
-  },
-
-  // Twitter
-  twitter: {
-    handle: "@apv_podcast",
-    site: "@apv_podcast",
-    cardType: "summary_large_image",
   },
 };
 
