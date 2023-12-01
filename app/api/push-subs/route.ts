@@ -34,6 +34,7 @@ export async function POST(request: Request) {
             status: 200
         })
     } catch (error) {
+        console.log('error', error)
         return new Response('Error saving subscription', {
             status: 500
         })
@@ -58,6 +59,7 @@ export async function DELETE(request: Request) {
             status: 200
         })
     } catch (error) {
+        
         return new Response('Error removing subscription', {
             status: 500
         })
