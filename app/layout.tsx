@@ -1,7 +1,7 @@
 import './globals.css'
 import { Jost } from 'next/font/google'
 import NavBar from '@/components/common/NavBar'
-import Head from 'next/head'
+import Script from 'next/script'
 
 const jost = Jost({ subsets: ['latin'] })
 
@@ -33,9 +33,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="es" className='h-full'>
-      <Head>
-        <script defer src="https://analytics.us.umami.is/script.js" data-website-id="b087e271-ef1e-408f-8aaa-ab6e21446aab"></script>
-      </Head>
+        <Script defer src="https://analytics.us.umami.is/script.js" data-website-id="b087e271-ef1e-408f-8aaa-ab6e21446aab"></Script>
       <body className={`${jost.className} flex flex-col h-full`}>
         <NavBar
           notificationButton={true}

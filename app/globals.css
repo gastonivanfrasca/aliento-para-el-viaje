@@ -1,4 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+@keyframes animateGradient {
+    0% {
+        background: linear-gradient(90deg, #190631 0%, #4f2189 99%);
+      }
+      20% {
+        background: linear-gradient(90deg, #2e1a47 0%, #49307c 99%);
+      }
+
+      40% {
+        background: linear-gradient(90deg, #2e1a47 0%, #49307c 99%)
+      }
+      50% {
+        background: linear-gradient(90deg, #2e1a47 0%, #49307c 99%)
+      }
+
+      100% {
+        background: linear-gradient(90deg, #190631 0%, #4f2189 99%);
+      }
+  }
+  
+  .primary-gradient {
+    animation: animateGradient 0.3s ease infinite;
+    background: linear-gradient(90deg, #190631 0%, #4f2189 99%);
+  }
+
+.text-primary-gradient {
+    background: rgb(25, 6, 49);
+    background: linear-gradient(90deg, rgba(25, 6, 49, 1) 0%, rgba(79, 33, 137, 1) 99%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.border-primary-gradient {
+    border-color: rgba(79, 33, 137, 1);
+    border: 3px solid rgba(79, 33, 137, 1);
+    box-shadow: 2px 2px 0px 1px rgba(79, 33, 137, 1);
+}
+
+.border-primary-gradient:hover {
+    box-shadow: 0px 0px 0px 1px rgba(79, 33, 137, 1);
+    background: linear-gradient(90deg, rgba(25, 6, 49, 1) 0%, rgba(79, 33, 137, 1) 99%);
+    border: none;
+}
+
+.border-primary-gradient:hover .text-primary-gradient  {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white;
+}

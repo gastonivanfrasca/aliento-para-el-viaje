@@ -29,7 +29,7 @@ const MenuLink = ({ href, children }: MenuLinkProps) => {
 const Menu = () => {
     return (
         <Sheet>
-            <SheetTrigger><MdMenu className="w-6 h-6" /></SheetTrigger>
+            <SheetTrigger><MdMenu className="w-6 h-6 text-primaryLight hover:cursor-pointer hover:w-7 hover:h-7" /></SheetTrigger>
             <SheetContent className="bg-white border-none shadow-md" side={"left"}>
                 <SheetHeader>
                     <SheetTitle className="text-2xl font-bold  bg-gradient-to-r from-primary to-primaryLight bg-clip-text text-primaryLight mb-5 pb-2">APV</SheetTitle>

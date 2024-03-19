@@ -67,7 +67,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
       />
       <div>
         <div onClick={handleSeek} style={{ position: 'relative', height: '20px', background: Colors.gray }}>
-          <div style={{ position: 'absolute', width: `${progress.played * 100}%`, height: '100%', background: Colors.primary }} />
+          <div style={{ position: 'absolute', width: `${progress.played * 100}%`, height: '100%' }} className='primary-gradient' />
         </div>
         <div className='flex justify-center items-center m-5 gap-3'>
           <span className='text-xl'>{formatTime(progress.playedSeconds)}</span>

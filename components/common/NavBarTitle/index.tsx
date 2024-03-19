@@ -9,7 +9,7 @@ type NavBarTitleProps = {
 
 const NavBarTitle = ({ themeText }: NavBarTitleProps) => {
     const pageTitle = useStore(state => state.pageTitle)
-    return <h1 className={`${themeText} text-lg`}>{pageTitle}</h1>
+    return <h1 className={`${themeText} text-lg text-primary-gradient font-medium`}>{pageTitle}</h1>
 }
 
 export default NavBarTitle;
