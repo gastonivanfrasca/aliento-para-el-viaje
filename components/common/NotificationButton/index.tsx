@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { MdNotifications, MdNotificationsOff } from 'react-icons/md'
-import va from '@vercel/analytics';
 import SwitchWithIcons from '../SwitchWithIcons';
+import { logPayloadFromClient } from '@/lib/utils';
 
 const base64ToUint8Array = (base64: any) => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -29,11 +29,9 @@ const NotificationButton = () => {
                 const sw = await navigator.serviceWorker.ready;
                 const permission = await Notification.requestPermission();
                 if (permission !== 'granted') {
-                    va.track('userDeniedNotifications');
                     return;
                 }
 
-                va.track('userAcceptedNotifications');
                 const subscription = await sw.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_VAP_PUB)
@@ -49,15 +47,14 @@ const NotificationButton = () => {
                 setIsSubscribed(true);
 
             } catch (err) {
-                console.log('Error al suscribirse', err);
+                logPayloadFromClient(err, 'Error al suscribirse', 'error')
             }
         } else {
-            console.log('Service Worker no soportado');
+            logPayloadFromClient(null, 'Service Worker no soportado', 'error')
         }
     }
 
     async function unsubscribeUser(): Promise<void> {
-        console.log('unsubscribeUser');
         if ('serviceWorker' in navigator && 'PushManager' in window) {
             try {
                 const sw = await navigator.serviceWorker.ready;

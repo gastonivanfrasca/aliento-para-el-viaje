@@ -19,17 +19,19 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const subscription = body;
-        kv.get('subscriptions').then((subs) => {
-            const subscriptions = subs as Subscriptions;
-            const alreadySubscribed = checkIfAlreadySubscribed(subscription, subscriptions);
-            if (alreadySubscribed) {
-                return new Response('Already subscribed', {
-                    status: 200
-                })
-            }
-            subscriptions.push(subscription);
-            kv.set('subscriptions', subscriptions);
-        })
+        let subscriptions = await kv.get('subscriptions') as Subscriptions;
+        if (!subscriptions || !Array.isArray(subscriptions) || subscriptions.length === 0) {
+            subscriptions = [] as Subscriptions;
+        }
+        const alreadySubscribed = checkIfAlreadySubscribed(subscription, subscriptions);
+        if (alreadySubscribed) {
+            return new Response('Already subscribed', {
+                status: 200
+            })
+        }
+        subscriptions.push(subscription);
+        kv.set('subscriptions', subscriptions);
+
         return new Response('Subscription saved', {
             status: 200
         })
@@ -59,7 +61,7 @@ export async function DELETE(request: Request) {
             status: 200
         })
     } catch (error) {
-        
+
         return new Response('Error removing subscription', {
             status: 500
         })
