@@ -1,10 +1,8 @@
-import AudioPlayer from "@/components/common/AudioPlayer"
-import AudioDescription from "@/components/pages/Home/AudioDescription"
-import PageTitleSetter from "@/components/common/PageTitleSetter";
 import { getLatestEpisode } from "@/lib/rss"
 import { Episode } from "@/lib/rss/types";
 import { kv } from "@vercel/kv";
 import { convertGMTStringToDate } from "@/lib/utils";
+import HomeAudio from '@/components/common/HomeAudio';
 
 const AUDIO_OF_THE_DAY_KEY = 'audioOfTheDay'
 
@@ -29,14 +27,6 @@ export default async function Home() {
   const audioOfTheDay = await getAudioOfTheDay()
   const transcription = audioOfTheDay.text ? audioOfTheDay.text : null
   return (
-    <>
-      <main className="px-10 py-8 flex-grow">
-        <AudioDescription title={audioOfTheDay.title} date={audioOfTheDay.pubDate} transcription={transcription} />
-      </main>
-      <footer>
-        <AudioPlayer url={audioOfTheDay.enclosure["@_url"]} customStyles={{ width: '100vw' }} />
-      </footer>
-      <PageTitleSetter title={"Audio del día"} />
-    </>
+    <HomeAudio audioOfTheDay={audioOfTheDay} transcription={transcription} />
   )
 }

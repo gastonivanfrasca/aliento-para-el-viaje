@@ -8,13 +8,13 @@ import { Colors } from '@/types/colors';
 interface AudioPlayerProps {
   url: string;
   customStyles?: React.CSSProperties;
+  playerRef:  any;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, customStyles, playerRef }) => {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState({ played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 });
   const [duration, setDuration] = useState(0);
-  const playerRef = useRef<ReactPlayer>(null);
 
 
   const formatTime = (seconds: number) => {

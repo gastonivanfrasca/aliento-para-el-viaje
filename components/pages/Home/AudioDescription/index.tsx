@@ -1,15 +1,17 @@
 import { convertGMTStringToDate } from "@/lib/utils";
 import DialogTranscription from "../TranscriptionDialog";
+import AudioSync from "@/components/common/Subtitles";
 
 
 type AudioDescriptionProps = {
     title: string,
     date: string,
-    transcription?: string | null
+    transcription?: string | null,
+    playerRef: any
 }
 
 const AudioDescription = async (props: AudioDescriptionProps) => {
-    const { title, date, transcription } = props;
+    const { title, date, transcription, playerRef } = props;
 
     return (
         <div className="flex flex-col h-full max-w-md m-auto md:justify-center gap-8 justify-around">
@@ -18,7 +20,7 @@ const AudioDescription = async (props: AudioDescriptionProps) => {
                 <h1 className="text-6xl font-bold text-primary-gradient mb-5 pb-2 break-words mt-2">{title}</h1>
             </div>
             <div>
-                {transcription ? <DialogTranscription transcription={transcription} title={title} /> : null}
+                {transcription && playerRef ? <AudioSync playerRef={playerRef} srtData={transcription} /> : null}
             </div>
 
         </div>

@@ -28,13 +28,13 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const trasncriptID = body.transcript_id
-        const pollingEndpoint = `${baseUrl}/transcript/${trasncriptID}`
+        const pollingEndpoint = `${baseUrl}/transcript/${trasncriptID}/srt`
         const pollingResponse = await axios.get(pollingEndpoint, {
             headers: headers
         })
         const transcriptionResult = pollingResponse.data
         const storedAudio = await getStoredAudio() as Episode
-        storedAudio.text = transcriptionResult.text
+        storedAudio.text = transcriptionResult
         await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(storedAudio))
 
         return new Response('OK', {
