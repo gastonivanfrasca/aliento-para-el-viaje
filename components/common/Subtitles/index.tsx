@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 
 interface Subtitle {
@@ -8,14 +8,23 @@ interface Subtitle {
   text: string;
 }
 
+interface GroupedSubtitle {
+  id: number;
+  start: number;
+  end: number;
+  text: string;
+  originalIndices: number[];
+}
+
 interface AudioSyncProps {
   srtData: string;
   playerRef: React.RefObject<ReactPlayer>;
 }
 
 const AudioSync: React.FC<AudioSyncProps> = ({ srtData, playerRef }) => {
-  const [currentSubtitleIndex, setCurrentSubtitleIndex] = useState<number>(-1);
+  const [currentGroupIndex, setCurrentGroupIndex] = useState<number>(-1);
   const transcriptionRef = useRef<HTMLDivElement>(null);
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const parseSRT = (srtText: string): Subtitle[] => {
     const subtitles: Subtitle[] = [];
@@ -42,48 +51,107 @@ const AudioSync: React.FC<AudioSyncProps> = ({ srtData, playerRef }) => {
 
   const subtitles = useMemo(() => parseSRT(srtData), [srtData]);
 
+  const groupSubtitles = (subtitles: Subtitle[]): GroupedSubtitle[] => {
+    const grouped: GroupedSubtitle[] = [];
+    let currentGroup: GroupedSubtitle | null = null;
+    const punctuationRegex = /[.!?]+/;
+
+    subtitles.forEach((subtitle, index) => {
+      if (!currentGroup) {
+        currentGroup = {
+          id: subtitle.id,
+          start: subtitle.start,
+          end: subtitle.end,
+          text: subtitle.text,
+          originalIndices: [index]
+        };
+      } else {
+        const combinedText = currentGroup.text + ' ' + subtitle.text;
+        if (punctuationRegex.test(currentGroup.text.slice(-1)) || combinedText.length > 200) {
+          grouped.push(currentGroup);
+          currentGroup = {
+            id: subtitle.id,
+            start: subtitle.start,
+            end: subtitle.end,
+            text: subtitle.text,
+            originalIndices: [index]
+          };
+        } else {
+          currentGroup.end = subtitle.end;
+          currentGroup.text = combinedText;
+          currentGroup.originalIndices.push(index);
+        }
+      }
+    });
+
+    if (currentGroup) {
+      grouped.push(currentGroup);
+    }
+
+    return grouped;
+  };
+
+  const groupedSubtitles = useMemo(() => groupSubtitles(subtitles), [subtitles]);
+
+  useEffect(() => {
+    groupRefs.current = groupRefs.current.slice(0, groupedSubtitles.length);
+  }, [groupedSubtitles]);
+
   useEffect(() => {
     const updateTranscription = () => {
       const player = playerRef.current;
       if (!player) return;
 
       const currentTime = player.getCurrentTime();
-      const index = subtitles.findIndex(sub => currentTime >= sub.start && currentTime <= sub.end);
-      setCurrentSubtitleIndex(index);
+      const index = groupedSubtitles.findIndex(group => currentTime >= group.start && currentTime <= group.end);
+      setCurrentGroupIndex(index);
     };
 
     const intervalId = setInterval(updateTranscription, 100);
     return () => clearInterval(intervalId);
-  }, [subtitles, playerRef]);
+  }, [groupedSubtitles, playerRef]);
 
   useEffect(() => {
-    if (currentSubtitleIndex !== -1 && transcriptionRef.current) {
-      const currentSubtitle = transcriptionRef.current.querySelector('.current');
-      if (currentSubtitle) {
-        currentSubtitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (currentGroupIndex !== -1 && transcriptionRef.current) {
+      const container = transcriptionRef.current;
+      const currentGroup = groupRefs.current[currentGroupIndex];
+
+      if (currentGroup) {
+        const containerRect = container.getBoundingClientRect();
+        const groupRect = currentGroup.getBoundingClientRect();
+
+        const targetScrollTop = container.scrollTop + (groupRect.top - containerRect.top) - (containerRect.height / 2) + (groupRect.height / 2);
+
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
       }
     }
-  }, [currentSubtitleIndex]);
+  }, [currentGroupIndex]);
 
   return (
-    <div className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg">
+    <div className="w-full max-w-2xl bg-white p-4 rounded-xl shadow-lg">
       <div
         ref={transcriptionRef}
-        className="h-80 overflow-y-auto p-4 border border-gray-200 rounded-lg"
+        className="h-80 overflow-y-auto p-4 rounded-lg relative"
       >
-        {subtitles.map((subtitle, index) => (
+        <div className="absolute left-0 right-0 h-8 top-1/2 -mt-4 opacity-50 pointer-events-none" />
+        {groupedSubtitles.map((group, index) => (
           <div
-            key={subtitle.id}
-            className={`transition-all duration-300 ease-in-out mb-3 p-2 rounded ${index === currentSubtitleIndex
-                ? 'font-bold text-blue-600 bg-blue-100'
-                : index === currentSubtitleIndex + 1
+            key={group.id}
+            ref={el => groupRefs.current[index] = el}
+            className={`transition-all duration-300 ease-in-out mb-3 p-2 rounded ${
+              index === currentGroupIndex
+                ? 'font-bold text-primary-gradient'
+                : index === currentGroupIndex + 1
                   ? 'opacity-70'
-                  : index < currentSubtitleIndex
+                  : index < currentGroupIndex
                     ? 'opacity-50'
                     : ''
-              }`}
+            }`}
           >
-            {subtitle.text}
+            {group.text}
           </div>
         ))}
       </div>

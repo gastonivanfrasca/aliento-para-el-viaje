@@ -14,7 +14,7 @@ export default function HomeAudio({ audioOfTheDay, transcription }: AudioProps) 
     const playerRef = React.useRef(null);
     return (
         <>
-            <main className="px-10 py-8 flex-grow">
+            <main className="px-10 pb-8 pt-2 flex-grow">
                 <AudioDescription title={audioOfTheDay.title} date={audioOfTheDay.pubDate} transcription={transcription} playerRef={playerRef} />
             </main>
             <footer>
