@@ -140,16 +140,16 @@ const AudioSync: React.FC<AudioSyncProps> = ({ srtData, playerRef }) => {
         {groupedSubtitles.map((group, index) => (
           <div
             key={group.id}
+            //@ts-ignore
             ref={el => groupRefs.current[index] = el}
-            className={`transition-all duration-300 ease-in-out mb-3 p-2 rounded ${
-              index === currentGroupIndex
+            className={`transition-all duration-300 ease-in-out mb-3 p-2 rounded ${index === currentGroupIndex
                 ? 'font-bold text-primary-gradient'
                 : index === currentGroupIndex + 1
                   ? 'opacity-70'
                   : index < currentGroupIndex
                     ? 'opacity-50'
                     : ''
-            }`}
+              }`}
           >
             {group.text}
           </div>
