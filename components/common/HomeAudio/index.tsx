@@ -14,10 +14,10 @@ export default function HomeAudio({ audioOfTheDay, transcription }: AudioProps) 
     const playerRef = React.useRef(null);
     return (
         <>
-            <main className="px-10 pb-8 pt-2 flex-grow">
+            <main className="px-10 pt-2 flex-grow pb-[170px]">
                 <AudioDescription title={audioOfTheDay.title} date={audioOfTheDay.pubDate} transcription={transcription} playerRef={playerRef} />
             </main>
-            <footer>
+            <footer className='fixed bottom-0 bg-white'>
                 <AudioPlayer url={audioOfTheDay.enclosure["@_url"]} customStyles={{ width: '100vw' }} playerRef={playerRef} />
             </footer>
             <PageTitleSetter title={"Audio del día"} />
