@@ -22,7 +22,7 @@
     "@vercel/edge-config": "^0.4.1",
     "@vercel/kv": "^0.2.4",
     "autoprefixer": "10.4.16",
-    "axios": "^1.6.4",
+    "axios": "^1.7.4",
     "babel-plugin-react-compiler": "^0.0.0-experimental-592953e-20240517",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
