@@ -1,6 +1,7 @@
 import { Episode } from '@/lib/rss/types';
 import { kv } from "@vercel/kv";
 import { Ratelimit } from '@upstash/ratelimit'
+import { supabase } from '@/lib/db';
 
 const ratelimit = new Ratelimit({
     redis: kv,
@@ -32,6 +33,15 @@ export async function POST(request: Request) {
         audioOfTheDay.text = priortext || await kv.get('transcription') as string;
         await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(audioOfTheDay));
         await transcribeAudio(process.env.ASSEMBLY_API!, audioOfTheDay.enclosure["@_url"])
+        const { error } = await supabase.from('audios').insert([{
+            audio_id: audioOfTheDay.id,
+            title: audioOfTheDay.title,
+            link: audioOfTheDay.link,
+            pub_date: audioOfTheDay.pubDate
+        }]);
+
+        if (error) throw error
+
         return new Response('OK', {
             status: 200
         })
@@ -68,15 +78,15 @@ async function transcribeAudio(api_token: string, audio_url: string) {
 
     try {
 
-    await fetch("https://api.assemblyai.com/v2/transcript", {
-        method: "POST",
-        body: JSON.stringify({
-            audio_url,
-            webhook_url: 'https://www.alientoparaelviaje.com/api/save-transcription',
-            language_code: 'es'
-        }),
-        headers,
-    });
+        await fetch("https://api.assemblyai.com/v2/transcript", {
+            method: "POST",
+            body: JSON.stringify({
+                audio_url,
+                webhook_url: 'https://www.alientoparaelviaje.com/api/save-transcription',
+                language_code: 'es'
+            }),
+            headers,
+        });
     } catch (error) {
         console.log('error', error)
     }

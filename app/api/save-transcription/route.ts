@@ -2,6 +2,7 @@ import { kv } from '@vercel/kv';
 import axios from 'axios'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Episode } from '@/lib/rss/types';
+import { supabase } from '@/lib/db';
 
 const ratelimit = new Ratelimit({
     redis: kv,
@@ -36,6 +37,22 @@ export async function POST(request: Request) {
         const storedAudio = await getStoredAudio() as Episode
         storedAudio.text = transcriptionResult
         await kv.set(AUDIO_OF_THE_DAY_KEY, JSON.stringify(storedAudio))
+        // insert the transcription in the latest audio
+        const { data, error } = await supabase
+            .from('audios')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+        if (error) throw error;
+        
+        const transcriptionSave = await supabase
+            .from('audios')
+            .update({ transcription: transcriptionResult })
+            .eq('audio_id', data.audio_id);
+
+        if (transcriptionSave.error) throw transcriptionSave.error
 
         return new Response('OK', {
             status: 200

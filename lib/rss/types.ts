@@ -1,4 +1,5 @@
 export type Episode = {
+  id: string;
   title: string;
   link: string;
   pubDate: string;
