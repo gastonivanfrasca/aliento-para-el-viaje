@@ -20,8 +20,8 @@
     "path": "/Users/gastonfrasca/projects/aliento-para-el-viaje/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "5.0.0.0",
-  "appVersionCode": 1,
+  "appVersionName": "5.0.0.1",
+  "appVersionCode": 2,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://alientoparaelviaje.com/manifest.webmanifest",
@@ -43,5 +43,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "5.0.0.0"
+  "appVersion": "5.0.0.1"
 }
