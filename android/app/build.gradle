@@ -55,7 +55,7 @@ android {
     namespace "com.alientoparaelviajeaudios.twa"
     defaultConfig {
         applicationId "com.alientoparaelviajeaudios.twa"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 36
         versionCode 1
         versionName "5.0.0.0"
