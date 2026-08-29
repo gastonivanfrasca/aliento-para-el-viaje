@@ -39,7 +39,21 @@ public/sw.js
 public/sw.js.map
 **/public/worker-*.js
 android.keystore
-.gradle/
-app/build/
-app/src/
-gradle/
+# Root-level leftover Bubblewrap output only (do not ignore android/)
+/.gradle/
+/app/build/
+/app/src/
+/gradle/
+
+# Android TWA project (generated under android/ so it does not clash with Next.js app/)
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/build/
+android/build/
+android/*.apk
+android/*.aab
+android/*.idsig
+android/*.keystore
+android/*.jks
+
